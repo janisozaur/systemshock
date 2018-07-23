@@ -237,17 +237,8 @@ static void set_texture(grs_bitmap *bm) {
 }
 
 static void draw_vertex(const g3s_point& vertex, GLint tcAttrib, GLint lightAttrib) {
-
-    // Default, per-vertex lighting
-    float light = vertex.i / 4096.0f;
-
-    // Could be a CLUT color instead, use that for lighting
-    if(gr_get_fill_type() == FILL_CLUT) {
-        light = abs(((uchar)(gr_get_fill_parm() >> 4))) / 256.0f;
-    }
-
     glVertexAttrib2f(tcAttrib, vertex.uv.u / 256.0, vertex.uv.v / 256.0);
-    glVertexAttrib1f(lightAttrib, 1.0f - light);
+    glVertexAttrib1f(lightAttrib, 1.0f - vertex.i / 4096.0f);
     glVertex3f(vertex.x / 65536.0f,  vertex.y / 65536.0f, -vertex.z / 65536.0f);
 }
 
